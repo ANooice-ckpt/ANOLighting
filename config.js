@@ -6,6 +6,7 @@ window.EXP_CONFIG = {
     morningSurvey: "https://v.wjx.cn/vm/eRi8SyX.aspx",
     eveningSurvey: "https://v.wjx.cn/vm/tI1pIMy.aspx",
     uploadPortal: "https://cloud.tsinghua.edu.cn/u/d/ff8d8d795059465abd8e/",
+    gpsGuide: "./gps-guide/",
     deviceGuide: "./guide/"
   },
 
