@@ -18,7 +18,9 @@
       --warnBg: #fff7ed;
       --warnLine: #f3dcc7;
       --warnText: #8a3b12;
-      --ok: #0f766e;
+      --criticalBg: #fff1f1;
+      --criticalLine: #d93025;
+      --criticalText: #8b0000;
       --radius: 18px;
     }
 
@@ -117,6 +119,21 @@
       color: var(--warnText);
       font-size: 14px;
       margin-top: 12px;
+    }
+
+    .critical-warning {
+      margin-top: 14px;
+      padding: 15px 16px;
+      border-radius: 15px;
+      background: var(--criticalBg);
+      border: 2px solid var(--criticalLine);
+      color: var(--criticalText);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .critical-warning strong {
+      font-weight: 800;
     }
 
     .compact-steps {
@@ -260,6 +277,10 @@
       grid-template-columns: 1fr 1fr;
     }
 
+    .photo-grid.three {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
     figure {
       margin: 0;
     }
@@ -281,28 +302,6 @@
       text-align: center;
     }
 
-    .checklist {
-      list-style: none;
-      padding: 0;
-      margin: 8px 0 0;
-    }
-
-    .checklist li {
-      display: grid;
-      grid-template-columns: 22px 1fr;
-      gap: 8px;
-      padding: 8px 0;
-      border-top: 1px solid var(--line);
-      font-size: 14px;
-    }
-
-    .checklist li:first-child { border-top: 0; }
-
-    .mark {
-      color: var(--ok);
-      font-weight: 800;
-    }
-
     .footer {
       color: var(--muted);
       text-align: center;
@@ -315,7 +314,8 @@
       .card { padding: 15px; }
       h1 { font-size: 22px; }
       .quick-links { grid-template-columns: 1fr; }
-      .photo-grid.two { grid-template-columns: 1fr; }
+      .photo-grid.two,
+      .photo-grid.three { grid-template-columns: 1fr; }
       .photo { max-height: none; }
       summary { grid-template-columns: 28px 1fr auto; padding: 12px; }
       .detail-body { padding: 0 12px 12px; }
@@ -327,6 +327,11 @@
       .card, details.step-detail { box-shadow: none; border: 1px solid #ddd; }
       .back, .quick-links { display: none; }
       details.step-detail { page-break-inside: avoid; }
+      .critical-warning {
+        background: #fff;
+        border: 2px solid #111;
+        color: #111;
+      }
     }
   </style>
 </head>
@@ -345,11 +350,12 @@
         <span class="badge">模式：Lighting Mode (Recorder)</span>
         <span class="badge">记录时长：起床后约 20 小时</span>
         <span class="badge">记录间隔：10 秒</span>
-        <span class="badge">记录后断开蓝牙</span>
+        <span class="badge">开始记录后必须断开蓝牙</span>
       </div>
 
-      <div class="warning">
-        关键警告：开始记录后，请点击右上角蓝牙图标断开连接。若记录期间蓝牙未断开，手机远离设备时可能导致记录停止。
+      <div class="critical-warning">
+        ⚠️ <strong>必须操作：开始记录后，请立即点击右上角蓝牙图标断开连接。</strong><br>
+        <strong>若未断开蓝牙，手机离开设备后可能导致记录停止，并造成当天光照数据丢失。</strong>
       </div>
     </section>
 
@@ -471,26 +477,18 @@
         <div class="detail-body">
           <ol>
             <li>确认记录状态已经开始。</li>
-            <li>点击屏幕右上角蓝牙图标，断开手机与设备连接。</li>
+            <li><strong>立即点击屏幕右上角蓝牙图标，断开手机与设备连接。</strong></li>
             <li>断开后，设备会自行持续记录测量值。</li>
           </ol>
-          <div class="warning">必须注意：记录期间如果蓝牙没有断开，手机一旦远离设备，可能出现停止记录的情况。</div>
+          <div class="critical-warning">
+            ⚠️ <strong>这一步必须完成。</strong><br>
+            <strong>如果没有断开蓝牙，手机远离设备时可能导致记录停止，并造成当天光照数据丢失。</strong>
+          </div>
           <div class="photo-grid">
             <figure><img class="photo" src="../assets/nsp32-10-recording-running.png" alt="NSP32 正在记录界面"><figcaption>记录状态界面</figcaption></figure>
           </div>
         </div>
       </details>
-    </section>
-
-    <section class="card">
-      <h2>开始记录前核对</h2>
-      <ul class="checklist">
-        <li><span class="mark">✓</span><span>设备绿灯正常，电量充足。</span></li>
-        <li><span class="mark">✓</span><span>已选择 Lighting Mode (Recorder)。</span></li>
-        <li><span class="mark">✓</span><span>记录时间覆盖起床后约 20 小时。</span></li>
-        <li><span class="mark">✓</span><span>记录间隔设置为 10 秒。</span></li>
-        <li><span class="mark">✓</span><span>开始记录后已断开蓝牙。</span></li>
-      </ul>
     </section>
 
     <p class="footer">本说明仅用于实验操作指导。具体要求以主试现场培训为准。</p>
