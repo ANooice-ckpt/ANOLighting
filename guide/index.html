@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111111" />
-  <title>光谱仪操作说明</title>
+  <title>NSP32 光谱仪操作说明</title>
   <style>
     :root {
       --bg: #f7f7f5;
@@ -15,10 +15,10 @@
       --button: #111111;
       --buttonText: #ffffff;
       --secondary: #f0f0ec;
-      --danger: #8a3b12;
-      --dangerBg: #fff7ed;
-      --dangerLine: #f3dcc7;
-      --ok: #0f6b4f;
+      --warnBg: #fff7ed;
+      --warnLine: #f3dcc7;
+      --warnText: #8a3b12;
+      --ok: #0f766e;
       --radius: 18px;
     }
 
@@ -31,212 +31,302 @@
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
-      line-height: 1.6;
+      line-height: 1.55;
     }
 
     .page {
       width: min(760px, 100%);
       margin: 0 auto;
-      padding: 22px 16px 40px;
+      padding: 18px 14px 36px;
     }
 
     .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      margin: -22px -16px 14px;
-      padding: 12px 16px;
-      background: rgba(247, 247, 245, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(232, 232, 227, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .back {
       display: inline-flex;
       align-items: center;
       min-height: 40px;
-      padding: 9px 13px;
-      border-radius: 999px;
-      background: var(--button);
-      color: var(--buttonText);
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: var(--secondary);
+      color: var(--text);
       text-decoration: none;
       font-size: 14px;
       font-weight: 650;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .card {
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     h1 {
       margin: 0 0 6px;
-      font-size: 24px;
+      font-size: 23px;
       line-height: 1.25;
       letter-spacing: -0.02em;
     }
 
     h2 {
-      margin: 0 0 8px;
-      font-size: 20px;
+      margin: 0 0 10px;
+      font-size: 18px;
       line-height: 1.35;
     }
 
-    p {
-      margin: 0 0 10px;
-    }
+    p { margin: 0 0 8px; }
 
     .muted {
       color: var(--muted);
       font-size: 14px;
     }
 
-    .toc {
-      display: grid;
-      grid-template-columns: 1fr;
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
       gap: 8px;
-      margin-top: 16px;
-    }
-
-    .toc a {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      min-height: 44px;
-      padding: 11px 13px;
-      border-radius: 13px;
-      background: var(--secondary);
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 650;
-    }
-
-    .toc a span {
-      color: var(--muted);
-      font-weight: 500;
-      font-size: 13px;
-    }
-
-    .step {
-      scroll-margin-top: 76px;
-    }
-
-    .step-title {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 8px;
+      margin-top: 12px;
     }
 
     .badge {
-      flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-width: 40px;
-      height: 28px;
-      padding: 0 10px;
+      min-height: 28px;
+      padding: 4px 9px;
       border-radius: 999px;
-      background: #111111;
-      color: #ffffff;
+      background: var(--secondary);
+      color: var(--text);
       font-size: 13px;
-      font-weight: 750;
-      letter-spacing: 0.01em;
-    }
-
-    .instruction {
-      font-size: 16px;
-      margin: 0 0 12px;
-    }
-
-    .figure-grid {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .figure-grid.two {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    figure {
-      margin: 0;
-      padding: 0;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      max-height: 680px;
-      object-fit: contain;
-      background: #111111;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-    }
-
-    .device-photo img { background: #eeeeea; }
-
-    figcaption {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .note, .warning, .success {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-size: 14px;
-    }
-
-    .note {
-      background: #f2f2ef;
-      border: 1px solid var(--line);
-      color: #333333;
+      font-weight: 650;
     }
 
     .warning {
-      background: var(--dangerBg);
-      border: 1px solid var(--dangerLine);
-      color: var(--danger);
+      padding: 12px 13px;
+      border-radius: 14px;
+      background: var(--warnBg);
+      border: 1px solid var(--warnLine);
+      color: var(--warnText);
+      font-size: 14px;
+      margin-top: 12px;
     }
 
-    .success {
-      background: #eef8f4;
-      border: 1px solid #cfe9df;
-      color: var(--ok);
+    .compact-steps {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
     }
 
-    .checklist {
+    .step-row {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .step-row:first-child { border-top: 0; padding-top: 0; }
+    .step-row:last-child { padding-bottom: 0; }
+
+    .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--button);
+      color: var(--buttonText);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .step-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .step-text {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .quick-links a {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 10px;
+      border-radius: 12px;
+      background: var(--secondary);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    details.step-detail {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    details.step-detail[open] {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.035);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 9px;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .summary-num {
+      width: 25px;
+      height: 25px;
+      border-radius: 999px;
+      background: var(--secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .summary-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .summary-hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    details[open] .summary-hint { display: none; }
+
+    .detail-body {
+      padding: 0 14px 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-body ol,
+    .detail-body ul {
       margin: 10px 0 0;
       padding-left: 20px;
     }
 
-    .checklist li {
+    .detail-body li {
       margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .photo-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .photo-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    .photo {
+      display: block;
+      width: 100%;
+      max-height: 520px;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #eeeeea;
+    }
+
+    figcaption {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 0;
+    }
+
+    .checklist li {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 8px;
+      padding: 8px 0;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .checklist li:first-child { border-top: 0; }
+
+    .mark {
+      color: var(--ok);
+      font-weight: 800;
     }
 
     .footer {
-      margin-top: 18px;
       color: var(--muted);
       text-align: center;
       font-size: 12px;
+      margin-top: 16px;
     }
 
-    @media (max-width: 560px) {
-      .page { padding: 18px 12px 34px; }
-      .topbar { margin: -18px -12px 12px; padding: 10px 12px; }
-      .card { padding: 16px; border-radius: 16px; }
+    @media (max-width: 520px) {
+      .page { padding: 14px 12px 30px; }
+      .card { padding: 15px; }
       h1 { font-size: 22px; }
-      h2 { font-size: 18px; }
-      .figure-grid.two { grid-template-columns: 1fr; }
-      img { max-height: 620px; }
+      .quick-links { grid-template-columns: 1fr; }
+      .photo-grid.two { grid-template-columns: 1fr; }
+      .photo { max-height: none; }
+      summary { grid-template-columns: 28px 1fr auto; padding: 12px; }
+      .detail-body { padding: 0 12px 12px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0; }
+      .card, details.step-detail { box-shadow: none; border: 1px solid #ddd; }
+      .back, .quick-links { display: none; }
+      details.step-detail { page-break-inside: avoid; }
     }
   </style>
 </head>
@@ -248,157 +338,162 @@
     </div>
 
     <section class="card">
-      <h1>二、光谱仪部分</h1>
-      <p class="muted">设备：NSP32 nanoLambda Spectrometer。请按顺序完成连接、模式设置、时间设置和断开蓝牙。实验期间如遇异常，请联系主试。</p>
+      <h1>NSP32 光谱仪操作说明</h1>
+      <p class="muted">本页用于实验期间设置光谱仪连续记录。请按步骤操作；如界面与图片略有差异，以关键参数为准。</p>
+
+      <div class="badges" aria-label="关键参数">
+        <span class="badge">模式：Lighting Mode (Recorder)</span>
+        <span class="badge">记录时长：起床后约 20 小时</span>
+        <span class="badge">记录间隔：10 秒</span>
+        <span class="badge">记录后断开蓝牙</span>
+      </div>
+
       <div class="warning">
-        关键原则：一旦开始测量，不要关闭光传感器；开始记录后需要断开蓝牙，让设备独立记录。
-      </div>
-
-      <nav class="toc" aria-label="光谱仪操作目录">
-        <a href="#step1">Step 1 <span>下载 App</span></a>
-        <a href="#step2">Step 2 <span>打开光传感器</span></a>
-        <a href="#step3">Step 3 <span>蓝牙配对</span></a>
-        <a href="#step4">Step 4 <span>进入记录模式</span></a>
-        <a href="#step5">Step 5 <span>开始记录并确认覆盖提示</span></a>
-        <a href="#step6">Step 6 <span>设置记录时间和间隔</span></a>
-        <a href="#step7">Step 7 <span>断开蓝牙</span></a>
-      </nav>
-    </section>
-
-    <section class="card step" id="step1">
-      <div class="step-title">
-        <span class="badge">Step 1</span>
-        <h2>下载应用</h2>
-      </div>
-      <p class="instruction">在应用商城搜索并下载 <strong>NSP32 nanoLambda Spectrometer</strong> 应用。</p>
-      <figure>
-        <img src="../assets/nsp32-01-app-store.png" alt="NSP32 nanoLambda Spectrometer 应用商城页面">
-        <figcaption>应用商城中的 NSP32 nanoLambda Spectrometer</figcaption>
-      </figure>
-    </section>
-
-    <section class="card step" id="step2">
-      <div class="step-title">
-        <span class="badge">Step 2</span>
-        <h2>打开光传感器</h2>
-      </div>
-      <p class="instruction">打开光传感器。当指示灯闪烁为绿色时，表示设备已准备好与手机配对。</p>
-      <div class="warning">
-        一旦开始测量，就不要关闭光传感器。光传感器电池寿命至少为 7 天，可在整个测量期间保持打开。
-      </div>
-      <figure class="device-photo">
-        <img src="../assets/nsp32-02-device-green-light.png" alt="光传感器绿色指示灯闪烁示意图">
-        <figcaption>绿色灯闪烁：设备可配对</figcaption>
-      </figure>
-    </section>
-
-    <section class="card step" id="step3">
-      <div class="step-title">
-        <span class="badge">Step 3</span>
-        <h2>连接设备</h2>
-      </div>
-      <p class="instruction">打开手机蓝牙，打开应用，点击 <strong>Find your device</strong>，选择要配对的光传感器，然后点击 <strong>CONNECT</strong>。</p>
-      <figure>
-        <img src="../assets/nsp32-03-device-pairing.png" alt="NSP32 应用中的 Device Pairing 配对界面">
-        <figcaption>在 Device Pairing 页面选择设备并点击 CONNECT</figcaption>
-      </figure>
-      <div class="note">
-        若列表中没有出现设备，请确认手机蓝牙已打开、设备电量充足、设备处于绿色灯闪烁状态。
+        关键警告：开始记录后，请点击右上角蓝牙图标断开连接。若记录期间蓝牙未断开，手机远离设备时可能导致记录停止。
       </div>
     </section>
 
-    <section class="card step" id="step4">
-      <div class="step-title">
-        <span class="badge">Step 4</span>
-        <h2>进入 Lighting Mode (Recorder)</h2>
+    <section class="card" aria-labelledby="overview-title">
+      <h2 id="overview-title">操作总览</h2>
+      <div class="compact-steps">
+        <div class="step-row"><span class="num">1</span><div><p class="step-title">安装 App</p><p class="step-text">应用商城下载“NSP32 nanoLambda Spectrometer”。</p></div></div>
+        <div class="step-row"><span class="num">2</span><div><p class="step-title">打开光传感器</p><p class="step-text">绿灯闪烁表示设备可配对；开始测量后不得关闭。</p></div></div>
+        <div class="step-row"><span class="num">3</span><div><p class="step-title">蓝牙配对</p><p class="step-text">打开手机蓝牙，在 App 中 find your device 并连接设备。</p></div></div>
+        <div class="step-row"><span class="num">4</span><div><p class="step-title">选择记录模式</p><p class="step-text">进入齿轮设置，选择 Lighting Mode (Recorder)。</p></div></div>
+        <div class="step-row"><span class="num">5</span><div><p class="step-title">开始记录</p><p class="step-text">点击播放图标；若提示覆盖旧数据，确认旧数据已保存后 Continue。</p></div></div>
+        <div class="step-row"><span class="num">6</span><div><p class="step-title">设置时间与间隔</p><p class="step-text">Custom；起床后约 20 小时；记录间隔 10 秒。</p></div></div>
+        <div class="step-row"><span class="num">7</span><div><p class="step-title">断开蓝牙</p><p class="step-text">记录开始后点击右上角蓝牙图标断开连接，让设备独立记录。</p></div></div>
       </div>
-      <p class="instruction">连接成功后进入主界面。点击左下角齿轮，选择 <strong>Lighting Mode (Recorder)</strong>。</p>
-      <div class="figure-grid two">
-        <figure>
-          <img src="../assets/nsp32-05-main-screen.png" alt="NSP32 应用主界面">
-          <figcaption>连接成功后的主界面</figcaption>
-        </figure>
-        <figure>
-          <img src="../assets/nsp32-04-lighting-mode-recorder.png" alt="Lighting Mode Recorder 设置界面">
-          <figcaption>选择 Lighting Mode (Recorder)</figcaption>
-        </figure>
+
+      <div class="quick-links" aria-label="快速跳转">
+        <a href="#step1">安装与开机</a>
+        <a href="#step3">配对连接</a>
+        <a href="#step4">模式设置</a>
+        <a href="#step6">时间与间隔</a>
       </div>
     </section>
 
-    <section class="card step" id="step5">
-      <div class="step-title">
-        <span class="badge">Step 5</span>
-        <h2>点击播放并确认提示</h2>
-      </div>
-      <p class="instruction">点击底部“播放”图标。出现覆盖提示时，确认之前的测量数据已经正确保存，然后点击 <strong>Continue</strong>。</p>
-      <figure>
-        <img src="../assets/nsp32-06-overwrite-warning.png" alt="应用提示旧记录会被新记录覆盖">
-        <figcaption>该提示表示旧记录将被新记录覆盖</figcaption>
-      </figure>
-      <div class="warning">
-        如果设备中仍有未保存的数据，不要直接 Continue。请先完成数据保存或联系主试。
-      </div>
-    </section>
+    <section aria-label="详细步骤">
+      <details class="step-detail" id="step1">
+        <summary><span class="summary-num">1</span><span class="summary-title">安装 “NSP32 nanoLambda Spectrometer” 应用</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>在手机应用商城搜索并下载 <strong>NSP32 nanoLambda Spectrometer</strong>。</li>
+            <li>安装完成后暂时不要开始记录，先准备设备配对。</li>
+          </ol>
+          <div class="photo-grid">
+            <figure><img class="photo" src="../assets/nsp32-01-app-store.png" alt="NSP32 nanoLambda Spectrometer 应用下载页面"><figcaption>应用下载页面</figcaption></figure>
+          </div>
+        </div>
+      </details>
 
-    <section class="card step" id="step6">
-      <div class="step-title">
-        <span class="badge">Step 6</span>
-        <h2>设置记录时长和记录间隔</h2>
-      </div>
-      <p class="instruction">点击 <strong>Custom</strong>，设置开始和结束时间。建议设置为起床后的 20 小时，例如 9:00 起床，则设置为当天 9:00 至次日 5:00。随后点击 <strong>Next</strong>，在下一页将 <strong>Period (sec)</strong> 设置为 <strong>10</strong>，点击 <strong>OK</strong> 开始记录。</p>
+      <details class="step-detail" id="step2">
+        <summary><span class="summary-num">2</span><span class="summary-title">打开光传感器，确认绿灯闪烁</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>打开光传感器。</li>
+            <li>当指示灯闪烁为绿色时，表示设备准备与手机配对。</li>
+            <li>一旦开始测量，不得关闭光传感器。</li>
+            <li>光传感器电池寿命至少约 7 天，可在整个测量期间保持打开。</li>
+          </ol>
+          <div class="photo-grid">
+            <figure><img class="photo" src="../assets/nsp32-02-device-green-light.png" alt="光传感器绿灯闪烁状态"><figcaption>绿灯闪烁表示可配对</figcaption></figure>
+          </div>
+        </div>
+      </details>
 
-      <div class="figure-grid">
-        <figure>
-          <img src="../assets/nsp32-07-duration-custom.png" alt="Duration 页面中选择 Custom">
-          <figcaption>选择 Custom，自定义记录时长</figcaption>
-        </figure>
-        <figure>
-          <img src="../assets/nsp32-08-duration-start-end.png" alt="设置记录开始时间和结束时间">
-          <figcaption>设置 From 和 To</figcaption>
-        </figure>
-        <figure>
-          <img src="../assets/nsp32-09-period-10s.png" alt="设置 Period 为 10 秒">
-          <figcaption>将 Period (sec) 设置为 10</figcaption>
-        </figure>
-      </div>
+      <details class="step-detail" id="step3">
+        <summary><span class="summary-num">3</span><span class="summary-title">打开蓝牙，在 App 中连接设备</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>打开手机蓝牙。</li>
+            <li>打开 App，点击 <strong>find your device</strong>。</li>
+            <li>在设备列表中选择对应的光传感器。</li>
+            <li>点击 <strong>CONNECT</strong> 完成连接。</li>
+          </ol>
+          <div class="photo-grid">
+            <figure><img class="photo" src="../assets/nsp32-03-device-pairing.png" alt="NSP32 设备配对界面"><figcaption>设备配对界面</figcaption></figure>
+          </div>
+        </div>
+      </details>
 
-      <div class="note">
-        洗澡、睡觉时可以摘下设备，并将设备立着放在桌面上。不要盖住传感器窗口。
-      </div>
-    </section>
+      <details class="step-detail" id="step4">
+        <summary><span class="summary-num">4</span><span class="summary-title">进入齿轮设置，选择 Lighting Mode (Recorder)</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>连接成功后，会进入主界面。</li>
+            <li>点击左下角齿轮图标。</li>
+            <li>选择 <strong>Lighting Mode (Recorder)</strong>。</li>
+          </ol>
+          <div class="photo-grid two">
+            <figure><img class="photo" src="../assets/nsp32-05-main-screen.png" alt="NSP32 主界面"><figcaption>连接后的主界面</figcaption></figure>
+            <figure><img class="photo" src="../assets/nsp32-04-lighting-mode-recorder.png" alt="Lighting Mode Recorder 设置界面"><figcaption>选择 Lighting Mode (Recorder)</figcaption></figure>
+          </div>
+        </div>
+      </details>
 
-    <section class="card step" id="step7">
-      <div class="step-title">
-        <span class="badge">Step 7</span>
-        <h2>开始记录后断开蓝牙</h2>
-      </div>
-      <p class="instruction">记录开始后，点击屏幕右上方的“蓝牙”图标断开连接。断开后，设备会自行记录测量值。</p>
-      <figure>
-        <img src="../assets/nsp32-10-recording-running.png" alt="NSP32 正在记录状态界面">
-        <figcaption>Recording status 出现进度，表示记录已开始</figcaption>
-      </figure>
-      <div class="warning">
-        务必注意：记录时如果没有主动断开蓝牙，手机一旦远离设备，可能导致记录停止。
-      </div>
-      <div class="success">
-        完成以上步骤后，光谱仪即可独立记录当天数据。
-      </div>
+      <details class="step-detail" id="step5">
+        <summary><span class="summary-num">5</span><span class="summary-title">点击播放图标；覆盖提示选择 Continue</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>点击底部播放图标，准备开始记录。</li>
+            <li>若出现 Warning，表示设备内旧记录将被新记录覆盖。</li>
+            <li>确认之前测量数据已经正确保存后，点击 <strong>Continue</strong>。</li>
+          </ol>
+          <div class="warning">如果旧数据尚未保存，不要点击 Continue。先联系主试或完成数据保存。</div>
+          <div class="photo-grid">
+            <figure><img class="photo" src="../assets/nsp32-06-overwrite-warning.png" alt="旧数据覆盖警告界面"><figcaption>旧记录覆盖提示</figcaption></figure>
+          </div>
+        </div>
+      </details>
+
+      <details class="step-detail" id="step6">
+        <summary><span class="summary-num">6</span><span class="summary-title">Custom 设置记录时长与 10 秒间隔</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>点击 <strong>Custom</strong>。</li>
+            <li>设置开始和结束时间：从起床后开始，持续约 20 小时。例如 09:00 起床，可设置为 09:00 至次日 05:00。</li>
+            <li>点击 <strong>Next</strong>。</li>
+            <li>设置 <strong>Period (sec.) = 10</strong>。</li>
+            <li>点击 <strong>OK</strong>，开始记录。</li>
+          </ol>
+          <div class="warning">洗澡、睡觉时可摘下设备，立着放在桌面上。不要关闭设备。</div>
+          <div class="photo-grid three">
+            <figure><img class="photo" src="../assets/nsp32-07-duration-custom.png" alt="Custom 记录时长设置入口"><figcaption>选择 Custom</figcaption></figure>
+            <figure><img class="photo" src="../assets/nsp32-08-duration-start-end.png" alt="设置记录开始和结束时间"><figcaption>设置开始和结束时间</figcaption></figure>
+            <figure><img class="photo" src="../assets/nsp32-09-period-10s.png" alt="设置记录间隔为 10 秒"><figcaption>设置 Period = 10 秒</figcaption></figure>
+          </div>
+        </div>
+      </details>
+
+      <details class="step-detail" id="step7" open>
+        <summary><span class="summary-num">7</span><span class="summary-title">记录开始后，点击右上角蓝牙图标断开连接</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>确认记录状态已经开始。</li>
+            <li>点击屏幕右上角蓝牙图标，断开手机与设备连接。</li>
+            <li>断开后，设备会自行持续记录测量值。</li>
+          </ol>
+          <div class="warning">必须注意：记录期间如果蓝牙没有断开，手机一旦远离设备，可能出现停止记录的情况。</div>
+          <div class="photo-grid">
+            <figure><img class="photo" src="../assets/nsp32-10-recording-running.png" alt="NSP32 正在记录界面"><figcaption>记录状态界面</figcaption></figure>
+          </div>
+        </div>
+      </details>
     </section>
 
     <section class="card">
-      <h2>快速核对</h2>
+      <h2>开始记录前核对</h2>
       <ul class="checklist">
-        <li>App 已下载并能打开。</li>
-        <li>光传感器已开启，且电量充足。</li>
-        <li>手机已成功连接设备。</li>
-        <li>模式已选择 Lighting Mode (Recorder)。</li>
-        <li>记录时间已覆盖起床后约 20 小时。</li>
-        <li>Period (sec) 已设置为 10。</li>
-        <li>开始记录后已主动断开蓝牙。</li>
+        <li><span class="mark">✓</span><span>设备绿灯正常，电量充足。</span></li>
+        <li><span class="mark">✓</span><span>已选择 Lighting Mode (Recorder)。</span></li>
+        <li><span class="mark">✓</span><span>记录时间覆盖起床后约 20 小时。</span></li>
+        <li><span class="mark">✓</span><span>记录间隔设置为 10 秒。</span></li>
+        <li><span class="mark">✓</span><span>开始记录后已断开蓝牙。</span></li>
       </ul>
     </section>
 
-    <p class="footer">本页面仅用于实验操作说明。具体要求以主试现场培训为准。</p>
+    <p class="footer">本说明仅用于实验操作指导。具体要求以主试现场培训为准。</p>
   </main>
 </body>
 </html>
