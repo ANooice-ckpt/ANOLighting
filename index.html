@@ -3,116 +3,259 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#111111" />
-  <title>每日任务入口</title>
+  <meta name="theme-color" content="#07111f" />
+  <title>光迹计划（北京）</title>
   <script src="./config.js"></script>
   <style>
     :root {
-      --bg: #f7f7f5;
-      --card: #ffffff;
-      --text: #111111;
-      --muted: #666666;
-      --line: #e8e8e3;
-      --button: #111111;
-      --buttonText: #ffffff;
-      --secondary: #f0f0ec;
-      --danger: #8a3b12;
-      --radius: 18px;
+      --bg0: #050812;
+      --bg1: #07111f;
+      --panel: rgba(12, 24, 42, 0.82);
+      --panel2: rgba(16, 31, 54, 0.72);
+      --text: #eef7ff;
+      --muted: #8da2b8;
+      --line: rgba(126, 205, 255, 0.22);
+      --line2: rgba(126, 205, 255, 0.12);
+      --cyan: #7edcff;
+      --cyan2: #2ea8ff;
+      --amber: #ffd37a;
+      --danger: #ffb37a;
+      --shadow: rgba(0, 0, 0, 0.35);
+      --radius: 22px;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: var(--bg);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(46,168,255,.32), transparent 34%),
+        radial-gradient(circle at 10% 20%, rgba(126,220,255,.13), transparent 28%),
+        linear-gradient(180deg, var(--bg1), var(--bg0) 68%);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
       line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 78%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(126,220,255,.05), transparent);
+      background-size: 100% 7px;
+      opacity: .42;
+      mix-blend-mode: screen;
     }
 
     .page {
-      width: min(560px, 100%);
+      width: min(620px, 100%);
       margin: 0 auto;
-      padding: 22px 16px 32px;
+      padding: 22px 16px 34px;
     }
 
-    .card {
-      background: var(--card);
+    .console {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.055), transparent 18%),
+        var(--panel);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      box-shadow:
+        0 24px 70px var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,.08);
+      backdrop-filter: blur(16px);
     }
 
-    .header { margin-bottom: 16px; }
+    .console::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      background:
+        linear-gradient(90deg, transparent, rgba(126,220,255,.16), transparent);
+      transform: translateX(-70%);
+      animation: sweep 6s ease-in-out infinite;
+      opacity: .5;
+    }
+
+    @keyframes sweep {
+      0%, 55% { transform: translateX(-85%); opacity: 0; }
+      70% { opacity: .38; }
+      100% { transform: translateX(85%); opacity: 0; }
+    }
+
+    .header {
+      position: relative;
+      padding: 2px 0 18px;
+      border-bottom: 1px solid var(--line2);
+      margin-bottom: 16px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan);
+    }
 
     .title {
-      margin: 0 0 4px;
-      font-size: 22px;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.12;
+      font-weight: 750;
+      letter-spacing: -0.04em;
+    }
+
+    .title-en {
+      margin-top: 7px;
+      color: var(--cyan);
+      font-size: 13px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     }
 
     .subtitle {
-      margin: 0;
+      margin: 12px 0 0;
       color: var(--muted);
       font-size: 14px;
     }
 
     .task-list {
       display: grid;
-      gap: 12px;
+      gap: 11px;
       margin: 18px 0;
     }
 
     .btn {
-      display: flex;
+      position: relative;
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
       align-items: center;
-      justify-content: space-between;
       gap: 12px;
       width: 100%;
-      min-height: 54px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--button);
-      background: var(--button);
-      color: var(--buttonText);
+      min-height: 62px;
+      padding: 13px 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(126,220,255,.24);
+      background:
+        linear-gradient(180deg, rgba(126,220,255,.10), rgba(126,220,255,.035)),
+        rgba(8, 18, 32, .72);
+      color: var(--text);
       text-decoration: none;
-      font-size: 16px;
-      font-weight: 650;
       -webkit-tap-highlight-color: transparent;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(126,220,255,.48);
+      background:
+        linear-gradient(180deg, rgba(126,220,255,.15), rgba(126,220,255,.05)),
+        rgba(8, 18, 32, .82);
     }
 
     .btn.secondary {
-      background: var(--secondary);
-      border-color: var(--secondary);
-      color: var(--text);
+      border-color: rgba(255,255,255,.13);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02)),
+        rgba(255,255,255,.035);
     }
 
-    .btn .hint {
-      flex: 0 0 auto;
-      color: inherit;
-      opacity: .72;
-      font-size: 18px;
+    .num {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      border: 1px solid rgba(126,220,255,.22);
+      color: var(--cyan);
+      background: rgba(126,220,255,.06);
+      font-size: 12px;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    .btn-main {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-sub {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .hint {
+      color: var(--cyan);
+      opacity: .9;
+      font-size: 22px;
+      line-height: 1;
     }
 
     .notice {
       margin-top: 16px;
       padding: 14px 14px;
-      border-radius: 14px;
-      background: #fff7ed;
-      border: 1px solid #f3dcc7;
-      color: var(--danger);
-      font-size: 14px;
+      border-radius: 16px;
+      background: rgba(255, 211, 122, .07);
+      border: 1px solid rgba(255, 211, 122, .22);
+      color: #f8dfae;
+      font-size: 13px;
     }
 
     .notice p { margin: 0 0 6px; }
     .notice p:last-child { margin-bottom: 0; }
 
     .notice-title {
-      margin: 10px 0 4px;
-      font-weight: 700;
-      color: var(--danger);
+      margin: 12px 0 4px;
+      font-weight: 800;
+      color: var(--amber);
+      font-size: 13px;
     }
 
     .notice-list {
@@ -128,55 +271,188 @@
       margin-bottom: 0;
     }
 
-    .footer {
-      margin-top: 14px;
+    .contact-panel {
+      margin-top: 12px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(126,220,255,.16);
+      background: rgba(126,220,255,.045);
       color: var(--muted);
+      font-size: 13px;
+    }
+
+    .contact-panel strong {
+      color: var(--text);
+      font-weight: 750;
+    }
+
+    .contact-number {
+      margin-top: 4px;
+      color: var(--cyan);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    .footer {
+      margin-top: 16px;
+      color: rgba(238,247,255,.66);
       text-align: center;
-      font-size: 12px;
+      font-size: 13px;
+      letter-spacing: .01em;
+    }
+
+    .footer-code {
+      margin-top: 7px;
+      color: rgba(126,220,255,.46);
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     }
 
     @media print {
-      body { background: #fff; }
+      body {
+        background: #fff;
+        color: #111;
+      }
+
+      body::before,
+      body::after,
+      .console::before {
+        display: none;
+      }
+
       .page { padding: 0; }
-      .card { box-shadow: none; border: 1px solid #ddd; }
-      .btn { color: #111; background: #fff; border: 1px solid #111; }
-      .btn.secondary { background: #fff; }
-      .notice { background: #fff; border: 1px solid #ddd; color: #111; }
-      .notice-title { color: #111; }
+
+      .console {
+        background: #fff;
+        border: 1px solid #ddd;
+        box-shadow: none;
+      }
+
+      .status-row,
+      .title-en,
+      .subtitle,
+      .btn-sub,
+      .footer-code {
+        color: #555;
+      }
+
+      .title,
+      .btn-main,
+      .contact-panel strong {
+        color: #111;
+      }
+
+      .btn,
+      .btn.secondary,
+      .notice,
+      .contact-panel {
+        background: #fff;
+        color: #111;
+        border: 1px solid #ddd;
+        box-shadow: none;
+      }
+
+      .num,
+      .hint,
+      .contact-number {
+        color: #111;
+        border-color: #ddd;
+        box-shadow: none;
+      }
+
+      .notice-title {
+        color: #111;
+      }
+
+      .footer {
+        color: #555;
+      }
     }
   </style>
 </head>
 <body>
   <main class="page">
-    <section class="card" aria-labelledby="study-title">
+    <section class="console" aria-labelledby="study-title">
       <header class="header">
-        <h1 class="title" id="study-title">每日任务入口</h1>
-        <p class="subtitle" id="study-subtitle">扫码后按当天情况选择对应任务</p>
+        <div class="status-row">
+          <span class="status"><span class="dot"></span>FIELD CONSOLE ONLINE</span>
+          <span>BEIJING NODE</span>
+        </div>
+
+        <h1 class="title" id="study-title">光迹计划（北京）</h1>
+        <div class="title-en">LightTrace Beijing</div>
+        <p class="subtitle" id="study-subtitle">每日观测任务入口｜请按当天情况选择对应操作</p>
       </header>
 
       <nav class="task-list" aria-label="实验每日任务">
-        <a class="btn" id="morning-link" href="#" rel="noopener">晨间睡眠记录 <span class="hint">›</span></a>
-        <a class="btn" id="evening-link" href="#" rel="noopener">睡前状态记录<span class="hint">›</span></a>
-        <a class="btn" id="upload-link" href="#" rel="noopener">光照/GPS数据回传<span class="hint">›</span></a>
-        <a class="btn secondary" id="gps-guide-link" href="#" rel="noopener">查看GPS记录操作协议<span class="hint">›</span></a>
-        <a class="btn secondary" id="guide-link" href="#" rel="noopener">查看光谱仪操作协议<span class="hint">›</span></a>
-        <a class="btn secondary" id="contact-link" href="#">联系主试 <span class="hint">›</span></a>
+        <a class="btn" id="morning-link" href="#" rel="noopener">
+          <span class="num">01</span>
+          <span>
+            <span class="btn-main">晨间睡眠记录</span>
+            <span class="btn-sub">起床后填写，约 30–45 秒</span>
+          </span>
+          <span class="hint">›</span>
+        </a>
+
+        <a class="btn" id="evening-link" href="#" rel="noopener">
+          <span class="num">02</span>
+          <span>
+            <span class="btn-main">睡前状态记录</span>
+            <span class="btn-sub">睡前填写，记录今日状态与设备情况</span>
+          </span>
+          <span class="hint">›</span>
+        </a>
+
+        <a class="btn" id="upload-link" href="#" rel="noopener">
+          <span class="num">03</span>
+          <span>
+            <span class="btn-main">光照 / GPS 数据回传</span>
+            <span class="btn-sub">上传当天记录文件</span>
+          </span>
+          <span class="hint">›</span>
+        </a>
+
+        <a class="btn secondary" id="gps-guide-link" href="#" rel="noopener">
+          <span class="num">04</span>
+          <span>
+            <span class="btn-main">GPS 记录操作协议</span>
+            <span class="btn-sub">查看线路追踪与保存说明</span>
+          </span>
+          <span class="hint">›</span>
+        </a>
+
+        <a class="btn secondary" id="guide-link" href="#" rel="noopener">
+          <span class="num">05</span>
+          <span>
+            <span class="btn-main">光谱仪操作协议</span>
+            <span class="btn-sub">查看光照设备记录与保存说明</span>
+          </span>
+          <span class="hint">›</span>
+        </a>
       </nav>
 
       <div class="notice" id="notice-box"></div>
+
+      <div class="contact-panel">
+        <strong>联系主试</strong>
+        <div class="contact-number">18845709176</div>
+      </div>
     </section>
 
-    <p class="footer">感谢你把每天真实经历的晨光、阴影与夜色，转化为理解城市光照与健康关系的可靠数据。</p>
+    <p class="footer">请记录今天的光。城市会在这些轨迹中逐渐显影。</p>
+    <p class="footer-code">LIGHTTRACE FIELD OBSERVATION CONSOLE</p>
   </main>
 
   <script>
     const cfg = window.EXP_CONFIG || {};
     const links = cfg.links || {};
-    const contact = cfg.contact || {};
 
-    document.title = cfg.shortTitle || "每日任务入口";
-    document.getElementById("study-title").textContent = cfg.studyTitle || "每日任务入口";
-    document.getElementById("study-subtitle").textContent = cfg.shortTitle || "扫码后按当天情况选择对应任务";
+    document.title = cfg.shortTitle || "光迹计划（北京）";
 
     const setHref = (id, href) => {
       const el = document.getElementById(id);
@@ -199,12 +475,11 @@
     setHref("gps-guide-link", links.gpsGuide);
     setHref("guide-link", links.deviceGuide);
 
-    const contactLink = document.getElementById("contact-link");
-    contactLink.href = contact.href || "javascript:void(0)";
-    contactLink.firstChild.textContent = `联系${contact.name || "主试"} `;
-
     const noticeBox = document.getElementById("notice-box");
-    const notices = cfg.notices || ["无需截图反馈，后台会自动记录填写与上传情况；若记录缺失、设备异常、无法上传或忘记编号，请等待主试联系或直接联系主试。"];
+    const notices = cfg.notices || [
+      "无需截图反馈，后台会自动记录填写与上传情况。",
+      "若记录缺失、设备异常、无法上传或忘记编号，可直接联系主试。"
+    ];
 
     const lightName = cfg.uploadNaming?.light || "005_20260706L.csv";
     const gpsName = cfg.uploadNaming?.gps || "005_20260706G.gpx";
@@ -214,7 +489,7 @@
       <div class="notice-title">上传文件命名提醒</div>
       <ol class="notice-list">
         <li>光照文件示例：${lightName}</li>
-        <li>GPS文件示例：${gpsName}</li>
+        <li>GPS 文件示例：${gpsName}</li>
       </ol>
     `;
   </script>
