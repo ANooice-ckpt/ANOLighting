@@ -1,6 +1,6 @@
 window.EXP_CONFIG = {
-  studyTitle: "北京市个体非视觉受光史大样本实验",
-  shortTitle: "每日任务入口",
+  studyTitle: "光迹计划（北京）",
+  shortTitle: "每日任务面板",
 
   links: {
     morningSurvey: "https://v.wjx.cn/vm/eRi8SyX.aspx",
