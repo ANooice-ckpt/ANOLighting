@@ -213,8 +213,8 @@
     const notices = cfg.notices || ["无需截图反馈，后台会自动记录填写情况；若缺失，主试会单独联系。"];
     noticeBox.innerHTML = notices.map(x => `<p>${x}</p>`).join("");
 
-    document.getElementById("light-name").textContent = cfg.uploadNaming?.light || "P001_20260706_LIGHT.csv";
-    document.getElementById("gps-name").textContent = cfg.uploadNaming?.gps || "P001_20260706_GPS.gpx";
+    document.getElementById("light-name").textContent = cfg.uploadNaming?.light || "005_20260706L.csv";
+    document.getElementById("gps-name").textContent = cfg.uploadNaming?.gps || "005_20260706G.gpx";
   </script>
 </body>
 </html>
