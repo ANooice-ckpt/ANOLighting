@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111111" />
+  <title>GPS 工具箱操作说明</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card: #ffffff;
+      --text: #111111;
+      --muted: #666666;
+      --line: #e8e8e3;
+      --button: #111111;
+      --buttonText: #ffffff;
+      --secondary: #f0f0ec;
+      --warnBg: #fff7ed;
+      --warnLine: #f3dcc7;
+      --warnText: #8a3b12;
+      --criticalBg: #fff1f1;
+      --criticalLine: #d93025;
+      --criticalText: #8b0000;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      padding: 18px 14px 36px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: var(--secondary);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 23px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    p { margin: 0 0 8px; }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--secondary);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .warning {
+      padding: 12px 13px;
+      border-radius: 14px;
+      background: var(--warnBg);
+      border: 1px solid var(--warnLine);
+      color: var(--warnText);
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .critical-warning {
+      margin-top: 14px;
+      padding: 15px 16px;
+      border-radius: 15px;
+      background: var(--criticalBg);
+      border: 2px solid var(--criticalLine);
+      color: var(--criticalText);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .critical-warning strong {
+      font-weight: 800;
+    }
+
+    .compact-steps {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .step-row {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .step-row:first-child { border-top: 0; padding-top: 0; }
+    .step-row:last-child { padding-bottom: 0; }
+
+    .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--button);
+      color: var(--buttonText);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .step-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .step-text {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .quick-links a {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 10px;
+      border-radius: 12px;
+      background: var(--secondary);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    details.step-detail {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    details.step-detail[open] {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.035);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 9px;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .summary-num {
+      width: 25px;
+      height: 25px;
+      border-radius: 999px;
+      background: var(--secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .summary-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .summary-hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    details[open] .summary-hint { display: none; }
+
+    .detail-body {
+      padding: 0 14px 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-body ol,
+    .detail-body ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    .detail-body li {
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .photo-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .photo-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    figure { margin: 0; }
+
+    .photo {
+      display: block;
+      width: 100%;
+      max-height: 560px;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #eeeeea;
+    }
+
+    figcaption {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .footer {
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 520px) {
+      .page { padding: 14px 12px 30px; }
+      .card { padding: 15px; }
+      h1 { font-size: 22px; }
+      .quick-links { grid-template-columns: 1fr; }
+      .photo-grid.two { grid-template-columns: 1fr; }
+      .photo { max-height: none; }
+      summary { grid-template-columns: 28px 1fr auto; padding: 12px; }
+      .detail-body { padding: 0 12px 12px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0; }
+      .card, details.step-detail { box-shadow: none; border: 1px solid #ddd; }
+      .back, .quick-links { display: none; }
+      details.step-detail { page-break-inside: avoid; }
+      .critical-warning {
+        background: #fff;
+        border: 2px solid #111;
+        color: #111;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="../">← 返回每日任务入口</a>
+    </div>
+
+    <section class="card">
+      <h1>GPS 工具箱操作说明</h1>
+      <p class="muted">本页用于实验期间记录每日活动路径。请在每天觉醒后开始记录，入睡前结束记录，并按要求上传 GPS 数据文件。</p>
+
+      <div class="badges" aria-label="关键参数">
+        <span class="badge">App：GPS 工具箱</span>
+        <span class="badge">功能：线路追踪</span>
+        <span class="badge">记录时间：觉醒后至入睡前</span>
+        <span class="badge">每天上传数据</span>
+      </div>
+
+      <div class="critical-warning">
+        ⚠️ <strong>必须操作：记录期间请不要退出 GPS 工具箱，也不要关闭定位权限。</strong><br>
+        <strong>若 App 被关闭、定位权限被禁用或系统后台限制过强，可能导致当天路径记录不完整。</strong>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="overview-title">
+      <h2 id="overview-title">操作总览</h2>
+      <div class="compact-steps">
+        <div class="step-row"><span class="num">1</span><div><p class="step-title">安装并注册</p><p class="step-text">应用商城下载“GPS 工具箱”App，并按提示完成注册。</p></div></div>
+        <div class="step-row"><span class="num">2</span><div><p class="step-title">开始线路追踪</p><p class="step-text">在首页选择“线路追踪”，每天觉醒后点击开始记录。</p></div></div>
+        <div class="step-row"><span class="num">3</span><div><p class="step-title">保持后台记录</p><p class="step-text">记录期间不要退出 App，不要关闭定位权限。</p></div></div>
+        <div class="step-row"><span class="num">4</span><div><p class="step-title">结束并保存</p><p class="step-text">入睡前结束记录，按要求命名并保存到本地。</p></div></div>
+        <div class="step-row"><span class="num">5</span><div><p class="step-title">系统设置</p><p class="step-text">在系统设置中勾选“线路追踪去除手机静止时的点”。</p></div></div>
+      </div>
+
+      <div class="quick-links" aria-label="快速跳转">
+        <a href="#step1">安装注册</a>
+        <a href="#step2">线路追踪</a>
+        <a href="#step4">保存命名</a>
+        <a href="#step5">注意事项</a>
+      </div>
+    </section>
+
+    <section aria-label="详细步骤">
+      <details class="step-detail" id="step1">
+        <summary><span class="summary-num">1</span><span class="summary-title">安装“GPS 工具箱”App，并完成注册</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>在手机应用商城搜索并下载 <strong>GPS 工具箱</strong>。</li>
+            <li>打开 App，并按提示完成注册或登录。</li>
+            <li>首次使用时，如系统请求定位权限，请选择允许。</li>
+          </ol>
+          <div class="photo-grid">
+            <figure><img class="photo" src="../assets/gps-01-app-store.png" alt="GPS 工具箱应用下载页面"><figcaption>应用下载页面</figcaption></figure>
+          </div>
+        </div>
+      </details>
+
+      <details class="step-detail" id="step2" open>
+        <summary><span class="summary-num">2</span><span class="summary-title">首页选择“线路追踪”，点击开始记录</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>进入 App 首页。</li>
+            <li>点击首页中的 <strong>线路追踪</strong> 功能。</li>
+            <li>每天觉醒后开始记录，入睡前结束记录。</li>
+            <li>记录期间不要退出 App，不要关闭定位权限。</li>
+          </ol>
+          <div class="warning">建议开始记录后先检查地图界面是否已经显示正在记录状态。</div>
+          <div class="photo-grid two">
+            <figure><img class="photo" src="../assets/gps-02-home.png" alt="GPS 工具箱首页线路追踪入口"><figcaption>首页选择“线路追踪”</figcaption></figure>
+            <figure><img class="photo" src="../assets/gps-03-tracking.png" alt="GPS 工具箱线路追踪记录界面"><figcaption>线路追踪记录界面</figcaption></figure>
+          </div>
+        </div>
+      </details>
+
+      <details class="step-detail" id="step3">
+        <summary><span class="summary-num">3</span><span class="summary-title">记录期间保持 App 和定位权限正常</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>记录期间尽量不要主动退出 GPS 工具箱。</li>
+            <li>不要关闭手机定位权限。</li>
+            <li>若系统提示后台运行、定位或电量优化限制，请尽量允许 App 继续运行。</li>
+            <li>如因手机重启、误关闭或权限异常导致记录中断，请在当日问卷中说明。</li>
+          </ol>
+          <div class="critical-warning">
+            ⚠️ <strong>记录完整性取决于 App 是否持续运行。</strong><br>
+            <strong>若中途退出或定位权限关闭，可能导致当天 GPS 轨迹缺失。</strong>
+          </div>
+        </div>
+      </details>
+
+      <details class="step-detail" id="step4">
+        <summary><span class="summary-num">4</span><span class="summary-title">结束记录后保存到本地，并按要求命名</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>入睡前结束当天线路追踪。</li>
+            <li>结束记录后，线路信息会保存在本地。</li>
+            <li>文件名请包含被试编号和日期。建议格式：<strong>005_20260706G</strong>。</li>
+            <li>保存后按主页面上传入口，将当天 GPS 数据上传到团队。</li>
+          </ol>
+          <div class="warning">若 App 内显示的默认名称类似“自动追踪_日期_时间”，请在保存或上传前改成主试要求的命名格式。</div>
+          <div class="photo-grid">
+            <figure><img class="photo" src="../assets/gps-04-route-info.png" alt="GPS 工具箱线路信息保存页面"><figcaption>线路信息保存页面</figcaption></figure>
+          </div>
+        </div>
+      </details>
+
+      <details class="step-detail" id="step5" open>
+        <summary><span class="summary-num">5</span><span class="summary-title">注意事项：勾选“线路追踪去除手机静止时的点”</span><span class="summary-hint">展开</span></summary>
+        <div class="detail-body">
+          <ol>
+            <li>进入 GPS 工具箱的系统设置。</li>
+            <li>找到并勾选 <strong>“线路追踪去除手机静止时的点”</strong>。</li>
+            <li>实验期间保持此设置不变。</li>
+          </ol>
+          <div class="critical-warning">
+            ⚠️ <strong>请确认已勾选“线路追踪去除手机静止时的点”。</strong><br>
+            <strong>该设置有助于减少静止状态下的冗余定位点，降低后续数据清理负担。</strong>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <p class="footer">本说明仅用于实验操作指导。具体要求以主试现场培训为准。</p>
+  </main>
+</body>
+</html>
