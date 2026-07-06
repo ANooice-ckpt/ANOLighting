@@ -267,6 +267,37 @@
       font-size: 14px;
     }
 
+    .download-actions {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .download-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 46px;
+      padding: 11px 13px;
+      border-radius: 13px;
+      background: var(--button);
+      color: var(--buttonText);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .download-btn.secondary {
+      background: var(--secondary);
+      color: var(--text);
+    }
+
+    .download-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .photo-grid {
       display: grid;
       gap: 10px;
@@ -362,7 +393,7 @@
     <section class="card" aria-labelledby="overview-title">
       <h2 id="overview-title">操作总览</h2>
       <div class="compact-steps">
-        <div class="step-row"><span class="num">1</span><div><p class="step-title">安装 App</p><p class="step-text">应用商城下载“NSP32 nanoLambda Spectrometer”。</p></div></div>
+        <div class="step-row"><span class="num">1</span><div><p class="step-title">安装 App</p><p class="step-text">可通过 Google Play 下载；若无法访问，可使用主试提供的 APK 安装包。</p></div></div>
         <div class="step-row"><span class="num">2</span><div><p class="step-title">打开光传感器</p><p class="step-text">绿灯闪烁表示设备可配对；开始测量后不得关闭。</p></div></div>
         <div class="step-row"><span class="num">3</span><div><p class="step-title">蓝牙配对</p><p class="step-text">打开手机蓝牙，在 App 中 find your device 并连接设备。</p></div></div>
         <div class="step-row"><span class="num">4</span><div><p class="step-title">选择记录模式</p><p class="step-text">进入齿轮设置，选择 Lighting Mode (Recorder)。</p></div></div>
@@ -384,9 +415,27 @@
         <summary><span class="summary-num">1</span><span class="summary-title">安装 “NSP32 nanoLambda Spectrometer” 应用</span><span class="summary-hint">展开</span></summary>
         <div class="detail-body">
           <ol>
-            <li>在手机应用商城搜索并下载 <strong>NSP32 nanoLambda Spectrometer</strong>。</li>
+            <li>Android 手机优先尝试通过官方 Google Play 页面安装 <strong>NSP32 nanoLambda Spectrometer</strong>。</li>
+            <li>若无法访问 Google Play，可下载主试提供的 APK 安装包并手动安装。</li>
             <li>安装完成后暂时不要开始记录，先准备设备配对。</li>
           </ol>
+
+          <div class="download-actions" aria-label="应用下载入口">
+            <a class="download-btn" href="https://play.google.com/store/apps/details?id=com.nanolambda.nsp32_spectrometer" target="_blank" rel="noopener">
+              Google Play 下载
+              <span>›</span>
+            </a>
+
+            <a class="download-btn secondary" href="../downloads/NSP32_nanoLambda_Spectrometer.apk" download>
+              下载 APK 安装包
+              <span>›</span>
+            </a>
+          </div>
+
+          <p class="download-note">
+            提示：APK 仅适用于 Android 手机。安装时若系统提示“未知来源应用”或“安装未知应用”，请按主试现场说明操作。
+          </p>
+
           <div class="photo-grid">
             <figure><img class="photo" src="../assets/nsp32-01-app-store.png" alt="NSP32 nanoLambda Spectrometer 应用下载页面"><figcaption>应用下载页面</figcaption></figure>
           </div>
