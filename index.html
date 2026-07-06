@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111111" />
+  <title>每日任务入口</title>
+  <script src="./config.js"></script>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card: #ffffff;
+      --text: #111111;
+      --muted: #666666;
+      --line: #e8e8e3;
+      --button: #111111;
+      --buttonText: #ffffff;
+      --secondary: #f0f0ec;
+      --danger: #8a3b12;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(560px, 100%);
+      margin: 0 auto;
+      padding: 22px 16px 32px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    }
+
+    .header { margin-bottom: 16px; }
+
+    .title {
+      margin: 0 0 4px;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--button);
+      background: var(--button);
+      color: var(--buttonText);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 650;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn.secondary {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: var(--text);
+    }
+
+    .btn .hint {
+      flex: 0 0 auto;
+      color: inherit;
+      opacity: .72;
+      font-size: 18px;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      background: #fff7ed;
+      border: 1px solid #f3dcc7;
+      color: var(--danger);
+      font-size: 14px;
+    }
+
+    .notice p { margin: 0 0 6px; }
+    .notice p:last-child { margin-bottom: 0; }
+
+    details {
+      margin-top: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 650;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .guide {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .guide li { margin-bottom: 6px; }
+
+    .footer {
+      margin-top: 14px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+      .btn { color: #111; background: #fff; border: 1px solid #111; }
+      .btn.secondary { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="card" aria-labelledby="study-title">
+      <header class="header">
+        <h1 class="title" id="study-title">每日任务入口</h1>
+        <p class="subtitle" id="study-subtitle">扫码后按当天情况选择对应任务</p>
+      </header>
+
+      <nav class="task-list" aria-label="实验每日任务">
+        <a class="btn" id="morning-link" href="#" rel="noopener">起床后填写晨间睡眠微问卷 <span class="hint">›</span></a>
+        <a class="btn" id="evening-link" href="#" rel="noopener">睡前填写每日主问卷 <span class="hint">›</span></a>
+        <a class="btn" id="upload-link" href="#" rel="noopener">上传光照/GPS 数据 <span class="hint">›</span></a>
+        <a class="btn secondary" id="guide-link" href="#" rel="noopener">查看设备操作说明 <span class="hint">›</span></a>
+        <a class="btn secondary" id="contact-link" href="#">联系主试 <span class="hint">›</span></a>
+      </nav>
+
+      <div class="notice" id="notice-box"></div>
+
+      <details>
+        <summary>上传文件命名提醒</summary>
+        <ol class="guide">
+          <li>光照文件示例：<span id="light-name"></span></li>
+          <li>GPS 文件示例：<span id="gps-name"></span></li>
+          <li>请确认文件名包含被试编号、日期和数据类型。</li>
+        </ol>
+      </details>
+    </section>
+
+    <p class="footer">本页面不登录、不保存数据；所有记录以问卷平台和上传平台后台为准。</p>
+  </main>
+
+  <script>
+    const cfg = window.EXP_CONFIG || {};
+    const links = cfg.links || {};
+    const contact = cfg.contact || {};
+
+    document.title = cfg.shortTitle || "每日任务入口";
+    document.getElementById("study-title").textContent = cfg.studyTitle || "每日任务入口";
+    document.getElementById("study-subtitle").textContent = cfg.shortTitle || "扫码后按当天情况选择对应任务";
+
+    const setHref = (id, href) => {
+      const el = document.getElementById(id);
+      if (!href) {
+        el.href = "javascript:void(0)";
+        el.setAttribute("aria-disabled", "true");
+        el.style.opacity = "0.55";
+        return;
+      }
+      el.href = href;
+      if (/^https?:\/\//.test(href)) el.target = "_blank";
+    };
+
+    setHref("morning-link", links.morningSurvey);
+    setHref("evening-link", links.eveningSurvey);
+    setHref("upload-link", links.uploadPortal);
+    setHref("guide-link", links.deviceGuide);
+
+    const contactLink = document.getElementById("contact-link");
+    contactLink.href = contact.href || "javascript:void(0)";
+    contactLink.firstChild.textContent = `联系${contact.name || "主试"} `;
+
+    const noticeBox = document.getElementById("notice-box");
+    const notices = cfg.notices || ["无需截图反馈，后台会自动记录填写情况；若缺失，主试会单独联系。"];
+    noticeBox.innerHTML = notices.map(x => `<p>${x}</p>`).join("");
+
+    document.getElementById("light-name").textContent = cfg.uploadNaming?.light || "P001_20260706_LIGHT.csv";
+    document.getElementById("gps-name").textContent = cfg.uploadNaming?.gps || "P001_20260706_GPS.gpx";
+  </script>
+</body>
+</html>
