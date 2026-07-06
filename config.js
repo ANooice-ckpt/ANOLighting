@@ -1,16 +1,12 @@
-// 北京市个体非视觉受光史大样本实验：一站式入口配置文件
-// 只需要改这里，不需要改 index.html。
-// 注意：不要把被试 ID 写进链接。被试 ID 应在问卷或上传表单内由被试填写/选择。
-
 window.EXP_CONFIG = {
   studyTitle: "北京市个体非视觉受光史大样本实验",
   shortTitle: "每日任务入口",
 
   links: {
-    morningSurvey: "https://example.com/morning-survey",
-    eveningSurvey: "https://example.com/evening-survey",
-    uploadPortal: "https://example.com/upload",
-    deviceGuide: "https://example.com/device-guide.pdf"
+    morningSurvey: "https://v.wjx.cn/vm/eRi8SyX.aspx",
+    eveningSurvey: "https://v.wjx.cn/vm/tI1pIMy.aspx",
+    uploadPortal: "https://cloud.tsinghua.edu.cn/u/d/ff8d8d795059465abd8e/",
+    deviceGuide: "./guide/"
   },
 
   contact: {
@@ -26,7 +22,7 @@ window.EXP_CONFIG = {
   ],
 
   uploadNaming: {
-    light: "P001_20260706_LIGHT.csv",
-    gps: "P001_20260706_GPS.gpx"
+    light: "005_20260706L.csv",
+    gps: "005_20260706G.gpx"
   }
 };
