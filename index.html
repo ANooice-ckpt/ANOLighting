@@ -109,28 +109,24 @@
     .notice p { margin: 0 0 6px; }
     .notice p:last-child { margin-bottom: 0; }
 
-    details {
-      margin-top: 14px;
-      border-top: 1px solid var(--line);
-      padding-top: 14px;
+    .notice-title {
+      margin: 10px 0 4px;
+      font-weight: 700;
+      color: var(--danger);
     }
 
-    summary {
-      cursor: pointer;
-      font-weight: 650;
-      list-style: none;
-    }
-
-    summary::-webkit-details-marker { display: none; }
-
-    .guide {
-      color: var(--muted);
-      font-size: 14px;
-      margin: 10px 0 0;
+    .notice-list {
+      margin: 4px 0 0;
       padding-left: 18px;
     }
 
-    .guide li { margin-bottom: 6px; }
+    .notice-list li {
+      margin-bottom: 4px;
+    }
+
+    .notice-list li:last-child {
+      margin-bottom: 0;
+    }
 
     .footer {
       margin-top: 14px;
@@ -145,6 +141,8 @@
       .card { box-shadow: none; border: 1px solid #ddd; }
       .btn { color: #111; background: #fff; border: 1px solid #111; }
       .btn.secondary { background: #fff; }
+      .notice { background: #fff; border: 1px solid #ddd; color: #111; }
+      .notice-title { color: #111; }
     }
   </style>
 </head>
@@ -160,23 +158,15 @@
         <a class="btn" id="morning-link" href="#" rel="noopener">起床后填写晨间问卷 <span class="hint">›</span></a>
         <a class="btn" id="evening-link" href="#" rel="noopener">入睡前填写夜间问卷 <span class="hint">›</span></a>
         <a class="btn" id="upload-link" href="#" rel="noopener">上传光照/GPS数据 <span class="hint">›</span></a>
+        <a class="btn secondary" id="gps-guide-link" href="#" rel="noopener">查看GPS记录App操作说明 <span class="hint">›</span></a>
         <a class="btn secondary" id="guide-link" href="#" rel="noopener">查看光照记录设备操作说明 <span class="hint">›</span></a>
         <a class="btn secondary" id="contact-link" href="#">联系主试 <span class="hint">›</span></a>
       </nav>
 
       <div class="notice" id="notice-box"></div>
-
-      <details>
-        <summary>上传文件命名提醒</summary>
-        <ol class="guide">
-          <li>光照文件示例：<span id="light-name"></span></li>
-          <li>GPS 文件示例：<span id="gps-name"></span></li>
-          <li>请确认文件名包含被试编号、日期和数据类型。</li>
-        </ol>
-      </details>
     </section>
 
-    <p class="footer">本页面不登录、不保存数据；所有记录以问卷平台和上传平台后台为准。</p>
+    <p class="footer">感谢你把每天真实经历的晨光、阴影与夜色，转化为理解城市光照与健康关系的可靠数据。</p>
   </main>
 
   <script>
@@ -190,12 +180,15 @@
 
     const setHref = (id, href) => {
       const el = document.getElementById(id);
+      if (!el) return;
+
       if (!href) {
         el.href = "javascript:void(0)";
         el.setAttribute("aria-disabled", "true");
         el.style.opacity = "0.55";
         return;
       }
+
       el.href = href;
       if (/^https?:\/\//.test(href)) el.target = "_blank";
     };
@@ -203,6 +196,7 @@
     setHref("morning-link", links.morningSurvey);
     setHref("evening-link", links.eveningSurvey);
     setHref("upload-link", links.uploadPortal);
+    setHref("gps-guide-link", links.gpsGuide);
     setHref("guide-link", links.deviceGuide);
 
     const contactLink = document.getElementById("contact-link");
@@ -211,10 +205,19 @@
 
     const noticeBox = document.getElementById("notice-box");
     const notices = cfg.notices || ["无需截图反馈，后台会自动记录填写情况；若缺失，主试会单独联系。"];
-    noticeBox.innerHTML = notices.map(x => `<p>${x}</p>`).join("");
 
-    document.getElementById("light-name").textContent = cfg.uploadNaming?.light || "005_20260706L.csv";
-    document.getElementById("gps-name").textContent = cfg.uploadNaming?.gps || "005_20260706G.gpx";
+    const lightName = cfg.uploadNaming?.light || "005_20260706L.csv";
+    const gpsName = cfg.uploadNaming?.gps || "005_20260706G.gpx";
+
+    noticeBox.innerHTML = `
+      ${notices.map(x => `<p>${x}</p>`).join("")}
+      <div class="notice-title">上传文件命名提醒</div>
+      <ol class="notice-list">
+        <li>光照文件示例：${lightName}</li>
+        <li>GPS文件示例：${gpsName}</li>
+        <li>请确认文件名包含被试编号、日期和数据类型。</li>
+      </ol>
+    `;
   </script>
 </body>
 </html>
