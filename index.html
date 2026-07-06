@@ -204,7 +204,7 @@
     contactLink.firstChild.textContent = `联系${contact.name || "主试"} `;
 
     const noticeBox = document.getElementById("notice-box");
-    const notices = cfg.notices || ["无需截图反馈，后台会自动记录填写情况；若缺失，主试会单独联系。"];
+    const notices = cfg.notices || ["无需截图反馈，后台会自动记录填写与上传情况；若记录缺失、设备异常、无法上传或忘记编号，请等待主试联系或直接联系主试。"];
 
     const lightName = cfg.uploadNaming?.light || "005_20260706L.csv";
     const gpsName = cfg.uploadNaming?.gps || "005_20260706G.gpx";
